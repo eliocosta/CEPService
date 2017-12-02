@@ -41,4 +41,26 @@ public class ZoneDAO {
 		
 		return list;
 	}
+	
+	public List<Cidade> buscaDDDPorCidade(String cidade) throws SQLException{
+		Statement stmt = Conexao.getInstance().getConexao().createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT city.id, city.id_state, city.title, city.iso_ddd, city.population, state.title estado, state.letter FROM city JOIN state ON state.id=city.id_state WHERE city.title LIKE '" + cidade + "'");
+		List<Cidade> list = new ArrayList<Cidade>();
+		
+		while(rs.next()){
+			Cidade c = new Cidade();
+			Estado e = new Estado();
+			e.setId(rs.getInt("id_state"));
+			e.setNome(rs.getString("estado"));
+			e.setSigla(rs.getString("letter"));
+			c.setEstado(e);
+			
+			c.setId(rs.getInt("id"));
+			c.setNome(rs.getString("title"));
+			c.setDdd(rs.getInt("iso_ddd"));
+			c.setPopulacao(rs.getInt("population"));
+			list.add(c);
+		}
+		return list;
+	}
 }

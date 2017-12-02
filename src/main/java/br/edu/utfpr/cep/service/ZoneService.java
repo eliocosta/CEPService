@@ -39,4 +39,16 @@ public class ZoneService {
 			return null;
 		}
 	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/buscaporcidade/{cidade}")
+	public List<Cidade> buscaDDDPorCidade(@PathParam("cidade") String cidade){
+		try {
+			return new ZoneDAO().buscaDDDPorCidade(cidade);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 }
